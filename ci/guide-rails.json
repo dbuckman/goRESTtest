@@ -1,0 +1,89 @@
+{
+	"metadata": {
+		"version": 1
+	},
+	"application": {
+		"name": "goRESTtest",
+		"language": "GOLANG",
+		"artifact_store": {
+			"repositories": null
+		}
+	},
+	"pipeline": {
+		"segments": [
+			{
+				"name": "Build",
+				"segment_type": "build",
+				"exit_actions": {},
+				"deployment_strategy": {},
+				"application_init": {},
+				"packages": [
+					{
+						"name": "((application.name))",
+						"downloads": [],
+						"files": [
+							"((application.name))*"
+						]
+					}
+				],
+				"instance_tags": [
+					{
+						"name": "application.name",
+						"value": "((application.name))"
+					}
+				],
+				"tasks": [
+					{
+						"name": "goRESTtest",
+						"steps": [
+							{
+								"name": "Get Dependencies",
+								"definition": "Get Dependencies",
+								"command": "go get -t -d ./...",
+								"properties": null
+							},
+							{
+								"name": "Unit Tests",
+								"definition": "Unit Tests",
+								"command": "set -o pipefail\nginkgo -cover -r -v -skipPackage=pb,test,mock,proto -outputdir=./ | tee ginkgo.output",
+								"properties": null
+							},
+							{
+								"name": "Convert coverage",
+								"definition": "Convert coverage",
+								"command": "cat ginkgo.output 2\u003e\u00261 | go-junit-report \u003e test.xml\ngocov convert *.coverprofile | gocov-xml \u003e coverage.xml",
+								"properties": null
+							},
+							{
+								"name": "Build",
+								"definition": "Build",
+								"command": "go build -o ((application.name))",
+								"properties": null
+							},
+							{
+								"name": "Build Instrumented",
+								"definition": "Build Instrumented",
+								"command": "go test -c -coverpkg=all -covermode=count -o ((application.name))-instrumented",
+								"properties": null
+							}
+						],
+						"docker_options": {}
+					}
+				]
+			}
+		],
+		"exit_actions": {},
+		"default_properties": [],
+		"deployment_files": [],
+		"application_init": {},
+		"releases": [
+			{
+				"name": "consul",
+				"version": "latest"
+			}
+		]
+	},
+	"organization": {
+		"orgname": "CloudBees"
+	}
+}
