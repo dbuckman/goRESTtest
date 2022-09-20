@@ -45,7 +45,7 @@
 							{
 								"name": "Unit Tests",
 								"definition": "Unit Tests",
-								"command": "set -o pipefail\nginkgo -cover -r -v -skip-package=pb,test,mock,proto,testdata | tee ginkgo.output\n\t@cat ginkgo.output 2\u003e\u00261 | go-junit-report \u003e test.xml",
+								"command": "ginkgo -cover -r -v -skip-package=pb,test,mock,proto,testdata | tee ginkgo.output\n\t@cat ginkgo.output 2\u003e\u00261 | go-junit-report \u003e test.xml",
 								"properties": null
 							},
 							{
