@@ -57,7 +57,7 @@
 							{
 								"name": "Build",
 								"definition": "Build",
-								"command": "go build -o ((application.name))",
+								"command": "go build -o ((application.name)) cmd/restTest/main.go",
 								"properties": null
 							},
 							{
