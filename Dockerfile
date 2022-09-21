@@ -3,7 +3,7 @@ COPY . .
 
 # Build the Go app
 RUN go mod download
-COPY *.go ./
+# COPY *.go ./
 RUN go build -o goRESTtest cmd/restTest/main.go
 
 FROM registry.access.redhat.com/ubi8-micro
