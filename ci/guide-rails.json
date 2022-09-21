@@ -79,7 +79,14 @@
 			}
 		],
 		"exit_actions": {},
-		"default_properties": [],
+		"default_properties": [
+			{
+				"name": "gr.docker.enabled",
+				"value": "true",
+				"description": "Enable Docker",
+				"type": "boolean"
+			}
+		],
 		"deployment_files": [],
 		"application_init": {}
 	},
